@@ -165,7 +165,7 @@ public class MapGenVeins extends MapGenOreDistribution
 
             for (int br = this.brFrequency.getIntValue(random); br > 0; --br)
             {
-                Random brRandom = new Random(random.nextLong());
+                Random brRandom = new org.bogdang.modifications.random.XSTR(random.nextLong());
                 Transform segMat = new Transform();
                 segMat.translate(mlX, mlY, mlZ);
                 segMat.rotateY(brRandom.nextFloat() * ((float)Math.PI * 2F));
@@ -199,13 +199,9 @@ public class MapGenVeins extends MapGenOreDistribution
             Transform segMat = mat.clone().scale(segRad, segRad, segLen);
             Component component = null;
 
-            switch (this.brType)
-            {
-                case Ellipsoid:
+            if (this.brType==BranchType.Ellipsoid) {
                     component = new SolidSphereComponent(structureGroup, segMat);
-                    break;
-
-                case Bezier:
+            } else if (this.brType==BranchType.Bezier) {
                     component = new BezierTubeComponent(structureGroup, segMat);
             }
 
@@ -217,24 +213,14 @@ public class MapGenVeins extends MapGenOreDistribution
             pos[2] = 0.0F;
             mat.transformVector(pos);
 
-            if (pos[1] > maxHeight || pos[1] < minHeight)
-            {
-                return;
-            }
-
-            if (!structureGroup.canPlaceComponentAt(((Component)component).getComponentType() + 1, pos[0], pos[1], pos[2], random))
-            {
-                return;
-            }
-
-            if (length <= 0.0F)
+            if (pos[1] > maxHeight || pos[1] < minHeight || !structureGroup.canPlaceComponentAt(((Component)component).getComponentType() + 1, pos[0], pos[1], pos[2], random) || length <= 0.0F)
             {
                 return;
             }
 
             for (int axisTheta = this.sgForkFrequency.getIntValue(random); axisTheta > 0; --axisTheta)
             {
-                Random fkRandom = new Random(random.nextLong());
+                Random fkRandom = new org.bogdang.modifications.random.XSTR(random.nextLong());
                 Transform fkMat = mat.clone();
                 float axisTheta1 = fkRandom.nextFloat() * ((float)Math.PI * 2F);
                 fkMat.rotate(this.sgAngle.getValue(fkRandom), MathHelper.cos(axisTheta1), MathHelper.sin(axisTheta1), 0.0F);
@@ -403,6 +389,7 @@ public class MapGenVeins extends MapGenOreDistribution
             this.context.init(0.0F, true);
             int height;
 
+            int count = 0;
             do
             {
                 height = (int)this.context.radius / 4 + 1;
@@ -474,6 +461,8 @@ public class MapGenVeins extends MapGenOreDistribution
                         }
                     }
                 }
+                count++;
+                //if (count>=100) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.WARN, (Throwable)null, "COG MapGenVeins addComponentParts count>=100");count=0;break;}
             }
             while (height > 0 && this.context.advance(0.7F * (float)height));
 
@@ -498,6 +487,7 @@ public class MapGenVeins extends MapGenOreDistribution
                 gb.setVertexMode(PrimitiveType.QUAD, new int[] {segments + 1, segments + 2, 1});
                 this.context.init(0.05F, true);
 
+                int count = 0;
                 do
                 {
                     this.mat.identity();
@@ -513,6 +503,8 @@ public class MapGenVeins extends MapGenOreDistribution
                     }
 
                     gb.addVertexRef(segments);
+                    count++;
+                    if (count>=100) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.WARN, (Throwable)null, "COG MapGenVeins buildWireframe count>=100");count=0;break;}
                 }
                 while (this.context.advance(2.0F));
             }
@@ -578,6 +570,7 @@ public class MapGenVeins extends MapGenOreDistribution
                 final float r = this.radius;
 
                 int countDeadlock = 10;
+                int count = 0;
                 do
                 {
                     final float nt = this.t + this.dt;
@@ -629,6 +622,7 @@ public class MapGenVeins extends MapGenOreDistribution
                         this.dt = (float)((double)this.dt * 1.8D);
                     }
                     countDeadlock--;
+                    count++;
                     if (countDeadlock == 0) {
                         CustomOreGenBase.log.info(String.format("Deadlock at pos (%f %f %f) der (%f %f %f) radius %f with tolerance %f",
                                                                 pX, pY, pZ, dX, dY, dZ, r,
@@ -642,6 +636,7 @@ public class MapGenVeins extends MapGenOreDistribution
                                                                 deltaX, deltaY, deltaZ, d2,
                                                                 der_deltaX, der_deltaY, der_deltaZ, derErr));
                     }
+                    if (count>=100) {cpw.mods.fml.common.FMLLog.log(org.apache.logging.log4j.Level.WARN, (Throwable)null, "COG MapGenVeins advance count>=100");count=0;break;}
                 }
                 while (this.dt >= Math.ulp(this.t) * 2.0F);
 

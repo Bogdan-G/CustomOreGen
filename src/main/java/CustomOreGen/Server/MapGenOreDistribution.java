@@ -210,7 +210,7 @@ public abstract class MapGenOreDistribution extends MapGenStructure implements I
         this._valid = false;
         this.newestGroup = null;
         this.name = "Distribution_" + distributionID;
-        this.seed = (new Random((long)distributionID)).nextLong();
+        this.seed = (new org.bogdang.modifications.random.XSTR((long)distributionID)).nextLong();
         this._canGenerate = canGenerate;
         this._settingMap = settingMap;
         this.minHeight = 0;
@@ -263,7 +263,7 @@ public abstract class MapGenOreDistribution extends MapGenStructure implements I
     {
         if (this._canGenerate && this._valid)
         {
-            Random random = new Random(world.getSeed());
+            Random random = new org.bogdang.modifications.random.XSTR(world.getSeed());
             long xSeed = random.nextLong() >> 3;
             long zSeed = random.nextLong() >> 3;
             random.setSeed(xSeed * (long)chunkX + zSeed * (long)chunkZ ^ world.getSeed() ^ this.seed);
@@ -623,7 +623,7 @@ public abstract class MapGenOreDistribution extends MapGenStructure implements I
 
             for (int i = 0; i < structureCount; ++i)
             {
-                Random random = new Random(rand.nextLong());
+                Random random = new org.bogdang.modifications.random.XSTR(rand.nextLong());
 
                 if (MapGenOreDistribution.this.generateStructure(this, random) != null)
                 {

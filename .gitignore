@@ -21,3 +21,5 @@ README.txt
 /changelog.txt
 /*.launch
 /run
+patch.patch
+patch*.patch

@@ -35,9 +35,9 @@ public class ClientState
     private static int _dgScanCounter = 0;
     private static int _dgBatchID = 0;
     @SideOnly(Side.CLIENT)
-    private static Map<Long,Integer> _dgListMap = new HashMap<Long, Integer>();
+    private static org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap _dgListMap = new org.eclipse.collections.impl.map.mutable.primitive.LongIntHashMap();
     @SideOnly(Side.CLIENT)
-    private static Set<Long> _chunkDGRequests = new HashSet<Long>();
+    private static org.eclipse.collections.impl.set.mutable.primitive.LongHashSet _chunkDGRequests = new org.eclipse.collections.impl.set.mutable.primitive.LongHashSet();
     @SideOnly(Side.CLIENT)
     private static IntBuffer _chunkDGListBuffer = null;
 
@@ -54,9 +54,9 @@ public class ClientState
     {
         if (_world != null && dgEnabled && dgRenderingMode != null && dgRenderingMode != WireframeRenderMode.NONE)
         {
-            double posX = cameraPOV.lastTickPosX + (cameraPOV.posX - cameraPOV.lastTickPosX) * partialTicks;
-            double posY = cameraPOV.lastTickPosY + (cameraPOV.posY - cameraPOV.lastTickPosY) * partialTicks;
-            double posZ = cameraPOV.lastTickPosZ + (cameraPOV.posZ - cameraPOV.lastTickPosZ) * partialTicks;
+            float posX = (float)(cameraPOV.lastTickPosX + (cameraPOV.posX - cameraPOV.lastTickPosX) * partialTicks);
+            float posY = (float)(cameraPOV.lastTickPosY + (cameraPOV.posY - cameraPOV.lastTickPosY) * partialTicks);
+            float posZ = (float)(cameraPOV.lastTickPosZ + (cameraPOV.posZ - cameraPOV.lastTickPosZ) * partialTicks);
 
             if (_dgScanCounter == 0)
             {
@@ -113,7 +113,7 @@ public class ClientState
             if (_chunkDGListBuffer != null)
             {
                 GL11.glPushMatrix();
-                GL11.glTranslated(-posX, -posY, -posZ);
+                GL11.glTranslatef(-posX, -posY, -posZ);
                 GL11.glDisable(2884);
                 GL11.glDisable(3553);
                 GL11.glEnable(3042);
@@ -206,10 +206,10 @@ public class ClientState
                         renderer.draw();
                         GL11.glEndList();
                         long key = (long)geometryData.chunkX << 32 | (long)geometryData.chunkZ & 4294967295L;
-                        final Integer curValue = _dgListMap.get(key);
+                        final int curValue = _dgListMap.get(key);
                         int limit;
 
-                        if (curValue != null && curValue != 0)
+                        if (curValue != 0)
                         {
                             for (limit = 0; limit < _chunkDGListBuffer.limit(); ++limit)
                             {
@@ -255,7 +255,8 @@ public class ClientState
     @SideOnly(Side.CLIENT)
     public static void clearDebuggingGeometry()
     {
-    	for (int list : _dgListMap.values()) {
+    	for (org.eclipse.collections.api.iterator.MutableIntIterator iterator = _dgListMap.values().intIterator();iterator.hasNext(); ) {
+    		int list = iterator.next();
     		if (list != 0)
             {
                 GL11.glDeleteLists(list, 1);
@@ -271,7 +272,7 @@ public class ClientState
         }
 
         dgEnabled = true;
-        _dgScanCounter = (new Random()).nextInt(40);
+        _dgScanCounter = (new org.bogdang.modifications.random.XSTR()).nextInt(40);
         ++_dgBatchID;
     }
 }

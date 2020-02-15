@@ -144,12 +144,12 @@ public class MapGenCloud extends MapGenOreDistribution
 
         public float getNoise(float x, float y, float z)
         {
-            double noise = 0.0D;
+            float noise = 0.0F;
 
             for (int i = 0; i < this.noiseLevels; ++i)
             {
-                float im = (float)(1 << i);
-                noise += (double)(1.0F / im) * this.noiseGen.noise((double)(x * im), (double)(y * im), (double)(z * im));
+                float im = 1 << i;
+                noise += (1.0F / im) * this.noiseGen.noise(x * im, y * im, z * im);
             }
 
             return (float)noise;

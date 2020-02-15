@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
@@ -74,7 +75,7 @@ public class BlockDescriptor implements Copyable<BlockDescriptor>
 		}
     }
 	
-    protected LinkedList<Descriptor> _descriptors = new LinkedList<Descriptor>();
+    protected ArrayList<Descriptor> _descriptors = new ArrayList<Descriptor>();
     protected Map<BlockInfo,Match> _matches = new Hashtable<BlockInfo,Match>();
     protected boolean _compiled = false;
     protected float[] _fastMatch = new float[256];
@@ -95,7 +96,7 @@ public class BlockDescriptor implements Copyable<BlockDescriptor>
 
 	public void copyFrom(BlockDescriptor source)
     {
-        this._descriptors = new LinkedList<Descriptor>(source._descriptors);
+        this._descriptors = new ArrayList<Descriptor>(source._descriptors);
         this._matches = new Hashtable<BlockInfo, Match>(source._matches);
         this._compiled = source._compiled;
         this._fastMatch = (float[])source._fastMatch.clone();
@@ -309,7 +310,7 @@ public class BlockDescriptor implements Copyable<BlockDescriptor>
         {
             if (rand == null)
             {
-                rand = new Random();
+                rand = new org.bogdang.modifications.random.XSTR();
             }
 
             return rand.nextFloat() < weight;
@@ -345,7 +346,7 @@ public class BlockDescriptor implements Copyable<BlockDescriptor>
                 {
                     if (rand == null)
                     {
-                        rand = new Random();
+                        rand = new org.bogdang.modifications.random.XSTR();
                     }
 
                     value = rand.nextFloat();

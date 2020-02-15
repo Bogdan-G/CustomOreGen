@@ -97,7 +97,7 @@ public class MapGenClusters extends MapGenOreDistribution
             for (int s = 0; s < this.rad.length; ++s)
             {
                 float ns = (float)s / (float)(this.rad.length - 1);
-                float baseRadius = (float)random.nextDouble() * (float)this.size / 32.0F;
+                float baseRadius = random.nextFloat() * (float)this.size / 32.0F;
                 this.rad[s] = MapGenClusters.adjustRadius(baseRadius, ns);
                 float xCenter = this.ptA[0] + (this.ptB[0] - this.ptA[0]) * ns;
                 float yCenter = this.ptA[1] + (this.ptB[1] - this.ptA[1]) * ns;

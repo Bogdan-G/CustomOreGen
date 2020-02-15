@@ -70,12 +70,10 @@ public class PDist implements Copyable<PDist>
         }
         else
         {
-            switch (this.type)
-            {
-                case uniform:
+            if (this.type==Type.uniform) {
                     return (rand.nextFloat() * 2.0F - 1.0F) * this.range + this.mean;
 
-                case normal:
+            } else if (this.type==Type.normal) {
                     float value = (float)rand.nextGaussian() / 2.5F;
 
                     if (value < -1.0F)
@@ -88,22 +86,22 @@ public class PDist implements Copyable<PDist>
                     }
 
                     return value * this.range + this.mean;
-                case inverse:
-                	value = inverseGaussian(1.5, 0.2F, rand)/2;
+            } else if (this.type==Type.inverse) {
+                	float value = inverseGaussian(1.5, 0.2F, rand)/2;
                 	if (value > 1.0F)
                     {
                         value = 1.0F;
                     }
                 	if(rand.nextBoolean()) value *= -1;
                     return value * this.range + this.mean;
-                case inverseAbs:
-                	value = inverseGaussian(1.5, 0.2F, rand)/2;
+            } else if (this.type==Type.inverseAbs) {
+                	float value = inverseGaussian(1.5, 0.2F, rand)/2;
                 	if (value > 1.0F)
                     {
                         value = 1.0F;
                     }
                     return value * this.range + this.mean;
-                default:
+            } else {
                     return 0.0F;
             }
         }
@@ -149,22 +147,19 @@ public class PDist implements Copyable<PDist>
     }
     
     public float cdf(float x) {
-    	switch (this.type)
-        {
-            case uniform:
+    	if (this.type==Type.uniform) {
                 return standardize(x);
 
-            case normal:
+    	} else if (this.type==Type.normal) {
             	float z = standardize(x);
                 return (float)(1/(1 + Math.exp(-0.07056 * Math.pow(z, 3) - 1.5976 * z)));
                 
-            case inverse:
-            case inverseAbs:
+    	} else if (this.type==Type.inverse || this.type==Type.inverseAbs) {
 			float m = (float)Math.sqrt(1/x);
             	//taken from Wolfram Alpha "graph cumulative wald distribution mean 1 scale 0.2"
             	return 0.5f*erfc(0.316228f*(1-x)*m) + 0.745912f*erfc(0.316228f*(1+x)*m);
             	
-            default:
+    	} else {
                 return 0.0F;
         }
     }

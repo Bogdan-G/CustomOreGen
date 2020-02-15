@@ -161,28 +161,18 @@ public class GeometryStream implements IGeometryBuilder
 
         if (primitive != null)
         {
-            switch (primitive)
-            {
-                case POINT:
+            if (primitive == PrimitiveType.POINT) {
                     opcode |= 1;
-                    break;
-
-                case LINE:
+            } else if (primitive == PrimitiveType.LINE) {
                     opcode |= 2;
                     irefMax = 1;
-                    break;
-
-                case TRIANGLE:
+            } else if (primitive == PrimitiveType.TRIANGLE) {
                     opcode |= 4;
                     irefMax = 2;
-                    break;
-
-                case TRIANGLE_ALT:
+            } else if (primitive == PrimitiveType.TRIANGLE_ALT) {
                     opcode |= 8;
                     irefMax = 2;
-                    break;
-
-                case QUAD:
+            } else if (primitive == PrimitiveType.QUAD) {
                     opcode |= 12;
                     irefMax = 3;
             }

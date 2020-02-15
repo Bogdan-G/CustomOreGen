@@ -128,7 +128,7 @@ public class ConfigParser
         }
         else
         {
-            this.rng = new Random(this.target.worldInfo.getSeed());
+            this.rng = new org.bogdang.modifications.random.XSTR(this.target.worldInfo.getSeed());
             this.rng.nextInt();
         }
 

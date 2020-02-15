@@ -23,12 +23,15 @@ apply plugin: 'curseforge'
 version = getVersionName()
 group= "org.pfaa.CustomOreGen"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 minecraft {
     version = "1.7.10-10.13.4.1448-1.7.10"
     runDir = "eclipse/assets"
 }
 
-curse {
+/*curse {
     projectId = '237130'
     apiKey = project.hasProperty('curseForgeApiKey') ? project.curseForgeApiKey : ''
     releaseType = 'release'
@@ -37,7 +40,7 @@ curse {
     // autogenerate from git logs?
     // https://github.com/marcpoppleton/gradle-changelog-plugin
     changelog = new File('changelog.txt').text
-}
+}*/
 
 def getVersionName()
 {
@@ -71,11 +74,11 @@ processResources
     }
 }
 
-apply plugin: 'quickmod'
+/*apply plugin: 'quickmod'
 quickmods {
   main {
     quickmodFile = file("quickmod.json")
     downloadType = 'flat'
     downloadBase = dir('.')
   }
-}
+}*/

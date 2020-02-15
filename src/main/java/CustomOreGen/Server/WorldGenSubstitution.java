@@ -140,7 +140,7 @@ public class WorldGenSubstitution extends WorldGenerator implements IOreDistribu
         this.placedBlocks = 0L;
         this._valid = false;
         this.name = "Substitute_" + distributionID;
-        this.seed = (new Random((long)distributionID)).nextLong();
+        this.seed = (new org.bogdang.modifications.random.XSTR((long)distributionID)).nextLong();
         this._canGenerate = canGenerate;
     }
 
@@ -178,7 +178,7 @@ public class WorldGenSubstitution extends WorldGenerator implements IOreDistribu
     {
         if (this._canGenerate && this._valid && this.oreBlock != null)
         {
-            Random random = new Random(world.getSeed());
+            Random random = new org.bogdang.modifications.random.XSTR(world.getSeed());
             long xSeed = random.nextLong() >> 3;
             long zSeed = random.nextLong() >> 3;
             random.setSeed(xSeed * (long)chunkX + zSeed * (long)chunkZ ^ world.getSeed() ^ this.seed);

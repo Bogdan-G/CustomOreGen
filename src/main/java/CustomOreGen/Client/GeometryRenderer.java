@@ -298,23 +298,14 @@ public class GeometryRenderer implements IGeometryBuilder
         {
             byte vCount = 0;
 
-            switch (this._primitive)
-            {
-                case POINT:
-                    vCount = 1;
-                    break;
-
-                case LINE:
-                    vCount = 2;
-                    break;
-
-                case TRIANGLE:
-                case TRIANGLE_ALT:
-                    vCount = 3;
-                    break;
-
-                case QUAD:
-                    vCount = 4;
+            if (this._primitive==PrimitiveType.POINT) {
+                vCount = 1;
+            } else if (this._primitive==PrimitiveType.LINE) {
+                vCount = 2;
+            } else if (this._primitive==PrimitiveType.TRIANGLE || this._primitive==PrimitiveType.TRIANGLE_ALT) {
+                vCount = 3;
+            } else if (this._primitive==PrimitiveType.QUAD) {
+                vCount = 4;
             }
 
             int iRefCount = this._implicitRefs == null ? 0 : this._implicitRefs.length;
@@ -424,23 +415,14 @@ public class GeometryRenderer implements IGeometryBuilder
 
         if (this._primitive != null)
         {
-            switch(this._primitive)
-            {
-                case POINT:
-                    renderMode = 0;
-                    break;
-
-                case LINE:
-                    renderMode = 1;
-                    break;
-
-                case TRIANGLE:
-                case TRIANGLE_ALT:
-                    renderMode = 4;
-                    break;
-
-                case QUAD:
-                    renderMode = 7;
+            if (this._primitive==PrimitiveType.POINT) {
+                renderMode = 0;
+            } else if (this._primitive==PrimitiveType.LINE) {
+                renderMode = 1;
+            } else if (this._primitive==PrimitiveType.TRIANGLE || this._primitive==PrimitiveType.TRIANGLE_ALT) {
+                renderMode = 4;
+            } else if (this._primitive==PrimitiveType.QUAD) {
+                renderMode = 7;
             }
         }
 
